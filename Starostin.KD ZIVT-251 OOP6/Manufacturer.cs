@@ -28,6 +28,7 @@ namespace Starostin.KD_ZIVT_251_OOP6
             CountryManufacturer = country;
             countEmployees = count;
         }
+        //hghgh
 
     }
 }
