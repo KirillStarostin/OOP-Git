@@ -5,7 +5,7 @@ using System.Text;
 namespace Starostin.KD_ZIVT_251_OOP6
 {
     public enum TypeCPU { Настольный, Серверный}
-    public enum ManufacturerCPU { Intel, AMD, Apple, Байкал};
+    public enum ManufacturerCPU { Intel, AMD, Apple, Байкал, GTS, OPD, Fly};
     public enum TypeOS { Windows_10, Windows_11, AstraLinux_SE, RedOS, MacOS};
     public enum regionPC { OMS, MSK, TMN, LEN, HAN, TOM, ORB, IRK, KAZ, TGZ, BLG, UFA}
     interface IComputer

@@ -72,22 +72,52 @@
 
             List<Manufacturer> manufacturers = new List<Manufacturer>
             {
-                new Manufacturer("Intel",   Country.США,        121000),
-                new Manufacturer("AMD",     Country.США,         26000),
-                new Manufacturer("Apple",   Country.США,        164000),
-                new Manufacturer("Байкал",  Country.Россия,        500),
-                new Manufacturer("Huawei",  Country.Китай,      207000),
-                new Manufacturer("Samsung", Country.ЮжнаяКорея, 270000),
-                new Manufacturer("TSMC",    Country.Тайвань,     73000)
+                new Manufacturer(ManufacturerCPU.Intel,   Country.США,        121000),
+                new Manufacturer(ManufacturerCPU.AMD,     Country.США,         26000),
+                new Manufacturer(ManufacturerCPU.Apple,   Country.США,        164000),
+                new Manufacturer(ManufacturerCPU.Байкал,  Country.Россия,        500),
+                new Manufacturer(ManufacturerCPU.GTS,  Country.Китай,      207000),
+                new Manufacturer(ManufacturerCPU.OPD, Country.ЮжнаяКорея, 270000),
+                new Manufacturer(ManufacturerCPU.Fly,    Country.Тайвань,     73000)
             };
-
-            // Вывод всех производителей
-            Console.WriteLine($"{"Название",-10} | {"Страна",-12} | {"Сотрудники",10}");
-            Console.WriteLine(new string('-', 40));
-            foreach (var m in manufacturers)
-                Console.WriteLine(m);
-
             Console.WriteLine();
+
+            var join = from comp in computers
+                         join manuf in manufacturers
+                             on comp.manufacturerCPU equals manuf.Name
+                         select new
+                         {
+                             NamePC = comp.namePC,
+                             CPU = comp.manufacturerCPU,
+                             TypeCPU = comp.typeCPU,
+                             Frequency = comp.clockSpeedCPU,
+                             RAM = comp.capacityRAM,
+                             ManufacturerName = manuf.Name,
+                             Country = manuf.CountryManufacturer,
+                             Employees = manuf.countEmployees
+                         };
+
+            // Вывод результата
+            foreach (var item in join)
+            {
+                Console.WriteLine(
+                    $"{item.NamePC} | " +
+                    $"{item.CPU, -10} | " +
+                    $"{item.Country, -15} | " +
+                    $"{item.Employees,-20}");
+            }
+            Console.WriteLine();
+
+            
+
+            // Метод удаляющий русские буквы
+            string RemoveRussianLetters(string str)
+            {
+                return System.Text.RegularExpressions.Regex.Replace(str, @"[А-Яа-яЁё]", "");
+            }
+
+            Console.WriteLine(RemoveRussianLetters("1C Предприятие"));
+            Console.ReadKey();
         }
     }
 }
