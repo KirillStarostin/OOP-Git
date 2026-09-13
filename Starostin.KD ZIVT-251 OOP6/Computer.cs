@@ -32,7 +32,6 @@ namespace Starostin.KD_ZIVT_251_OOP6
             "MS Visual Studio", "Yandex", "iTunes", "Discord",
             "Happ", "Skype", "1С Предприятие", "Kate", "NVIDIA App", "7-Zip"
         };
-
         public static string[] UserNames = {
             "Starostin.KD", "Ivko.MN", "Lepilina.PA", "Petrenko.ES", "Zhmaylo.AN",
             "Malyash.MG", "Namestnikova.EA", "Pushkarev.DA", "Petuhova.YuA", "Gryzlov.AA",
@@ -73,6 +72,7 @@ namespace Starostin.KD_ZIVT_251_OOP6
             namePC = namepc;
         }
 
+        // Метод разгона
         public void OverclockTheComputer()
         {
             // Проверка на разгон
@@ -147,10 +147,11 @@ namespace Starostin.KD_ZIVT_251_OOP6
             // Случайные имена ПК
             string name = $"{(regionPC)random.Next(Enum.GetValues(typeof(regionPC)).Length)}-{random.Next(1000,10000)}";
 
-            // Создаём и возвращаем экземпляр
+            // Создаём экземпляр
             return new Computer(name, cpu, manufacturer, os, frequency, ram, software, users);
         }
 
+        // Метод генерации 100 ПК
         public static List<Computer> Generate100()
         {
             List<Computer> computers = new List<Computer>();

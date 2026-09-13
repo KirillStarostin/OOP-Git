@@ -15,6 +15,7 @@ namespace Starostin.KD_ZIVT_251_OOP6
         public Country CountryManufacturer { get; set; }
         public int countEmployees { get; set; }
 
+        // Конструктор без параметров
         public Manufacturer()
         {
             Name = ManufacturerCPU.Intel;
@@ -22,6 +23,7 @@ namespace Starostin.KD_ZIVT_251_OOP6
             countEmployees = 15067;
         }
 
+        // Конструктор с параметрами
         public Manufacturer(ManufacturerCPU name, Country country, int count)
         {
             Name = name;
