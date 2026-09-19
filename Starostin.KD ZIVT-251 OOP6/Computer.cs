@@ -173,6 +173,7 @@ namespace Starostin.KD_ZIVT_251_OOP6
             return computers;
         }
 
+
         public void AddUser(string user)
         {
             usersPC.Add(user);
