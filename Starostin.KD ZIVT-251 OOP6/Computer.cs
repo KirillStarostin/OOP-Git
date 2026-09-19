@@ -22,6 +22,10 @@ namespace Starostin.KD_ZIVT_251_OOP6
     {
         void OverclockTheComputer();
     }
+    public delegate void UserAddedHandler(string userName);
+    public delegate void CPUReplacedHandler(string oldCPU, string newCPU);
+    public delegate void SoftwareInstalledHandler(string softwareName);
+    public delegate void RAMReplacedHandler(int oldRAM, int newRAM);
     public class Computer: IOverclock, IComputer
     {
         private static readonly Random random = new Random();
@@ -47,6 +51,12 @@ namespace Starostin.KD_ZIVT_251_OOP6
         public List<string> usersPC { get; set; }
         bool is_Overcloked = false;
         public string namePC;
+
+        // События
+        public event UserAddedHandler NewUserAdded;
+        public event CPUReplacedHandler CPUReplaced;
+        public event SoftwareInstalledHandler SoftwareInstalled;
+        public event RAMReplacedHandler RAMReplaced;
 
         // Конструктор без параметров
         public Computer()
@@ -161,6 +171,18 @@ namespace Starostin.KD_ZIVT_251_OOP6
             }
 
             return computers;
+        }
+
+        public void AddUser(string user)
+        {
+            usersPC.Add(user);
+            NewUserAdded?.Invoke(user);
+        }
+
+        public void RemoveUser(string user)
+        {
+            usersPC.Remove(user);
+            NewUserAdded?.Invoke(user);
         }
     }
 }

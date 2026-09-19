@@ -54,17 +54,6 @@
             Console.WriteLine($"Сортировка по типу ЦП и производителю");
             foreach (var pc in sortbyCPUandManufacturer)
                 Console.WriteLine($"  {pc.namePC}: {pc.typeCPU} {pc.manufacturerCPU}");
-
-            // Анонимный метод
-            MyDel average = delegate (int[] a)
-            {
-                int summ = 0;
-                foreach (int i in a)
-                {
-                    summ += i;
-                }
-                return summ / a.Length;
-            };
         }
     }
 }
