@@ -23,9 +23,9 @@ namespace Starostin.KD_ZIVT_251_OOP6
         void OverclockTheComputer();
     }
     public delegate void UserAddedHandler(string userName);
-    public delegate void CPUReplacedHandler(string oldCPU, string newCPU);
-    public delegate void SoftwareInstalledHandler(string softwareName);
-    public delegate void RAMReplacedHandler(int oldRAM, int newRAM);
+    public delegate void CPUChangeHandler(ManufacturerCPU oldmanufacturerCPU, TypeCPU oldtypeCPU, ManufacturerCPU newmanufacturerCPU, TypeCPU newtypeCPU);
+    public delegate void SoftwareInstallHandler(string softwareName);
+    public delegate void RAMChangeHandler(int difference);
     public class Computer: IOverclock, IComputer
     {
         private static readonly Random random = new Random();
@@ -41,8 +41,8 @@ namespace Starostin.KD_ZIVT_251_OOP6
             "Malyash.MG", "Namestnikova.EA", "Pushkarev.DA", "Petuhova.YuA", "Gryzlov.AA",
             "Dolidze.LG","Chepurnaya.SYu","Eremina.GYu","Alekseev.AS","Kushvid.AS"
         };
-        public TypeCPU typeCPU { get; }
-        public ManufacturerCPU manufacturerCPU { get; }
+        public TypeCPU typeCPU { get; set; }
+        public ManufacturerCPU manufacturerCPU { get; set; }
         public TypeOS typeOS { get; }
         public int clockSpeedCPU { get; set; }
         public int capacityRAM { get; set; }
@@ -51,11 +51,65 @@ namespace Starostin.KD_ZIVT_251_OOP6
         bool is_Overcloked = false;
         public string namePC;
 
+
+        private UserAddedHandler newUserAdded;
+        private CPUChangeHandler CPUchanged;
+        private SoftwareInstallHandler SoftInstall;
+        private RAMChangeHandler RAMChanged;
         // События
-        public event UserAddedHandler NewUserAdded;
-        public event CPUReplacedHandler CPUReplaced;
-        public event SoftwareInstalledHandler SoftwareInstalled;
-        public event RAMReplacedHandler RAMReplaced;
+        public event UserAddedHandler NewUserAdded
+        {
+            add
+            {
+                Console.WriteLine("Подписка на событие NewUserAdded");
+                newUserAdded += value;
+            }
+            remove
+            {
+                Console.WriteLine("Отписка от события NewUserAdded");
+                newUserAdded -= value;
+            }
+        }
+        public event CPUChangeHandler CPUChanged
+        {
+            add
+            {
+                Console.WriteLine("Подписка на событие CPUChanged");
+                CPUchanged += value;
+            }
+            remove
+            {
+                Console.WriteLine("Отписка от события NewUserAdded");
+                CPUchanged -= value;
+            }
+        }
+
+        public event SoftwareInstallHandler SoftInstalled
+        {
+            add
+            {
+                Console.WriteLine("Подписка на событие NewUserAdded");
+                SoftInstall += value;
+            }
+            remove
+            {
+                Console.WriteLine("Отписка от события NewUserAdded");
+                SoftInstall -= value;
+            }
+        }
+        public event RAMChangeHandler RAMChange
+        {
+            add
+            {
+                Console.WriteLine("Подписка на событие NewUserAdded");
+                RAMChanged += value;
+            }
+            remove
+            {
+                Console.WriteLine("Отписка от события NewUserAdded");
+                RAMChanged -= value;
+            }
+        }
 
         // Конструктор без параметров
         public Computer()
@@ -178,13 +232,30 @@ namespace Starostin.KD_ZIVT_251_OOP6
         public void AddUser(string user)
         {
             usersPC.Add(user);
-            NewUserAdded?.Invoke(user);
+            newUserAdded?.Invoke(user);
         }
 
-        public void RemoveUser(string user)
+        public void ChangeCPU(TypeCPU typecpu, ManufacturerCPU manufacturercpu, int clockspeedcpu)
         {
-            usersPC.Remove(user);
-            NewUserAdded?.Invoke(user);
+            TypeCPU oldtypeCPU = typeCPU;
+            ManufacturerCPU oldmanufacturerCPU = manufacturerCPU;
+            typeCPU = typecpu;
+            manufacturerCPU = manufacturercpu;
+            clockSpeedCPU = clockspeedcpu;
+            CPUchanged?.Invoke(oldmanufacturerCPU, oldtypeCPU, manufacturercpu, typecpu);
+        }
+
+        public void InstallSoft(string SoftName)
+        {
+            installedSoftware.Add(SoftName);
+            SoftInstall?.Invoke(SoftName);
+        }
+
+        public void ChangeRAM(int capacityram)
+        {
+            int difference = capacityram - capacityRAM;
+            capacityRAM = capacityram;
+            RAMChanged?.Invoke(difference);
         }
     }
 }

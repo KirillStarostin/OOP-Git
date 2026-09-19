@@ -2,7 +2,6 @@
 {
     class Programm
     {
-        public delegate double MyDel(int[] a);
         static void Main()
         {
             // Создаем 100 ПК
@@ -26,6 +25,7 @@
             Console.WriteLine($"Компьютеры с настольным процессором Intel:");
             foreach (var pc in FilterbyCPUandManufacturer)
                 Console.WriteLine($"  {pc.namePC}: {pc.typeCPU} {pc.manufacturerCPU}");
+            Console.WriteLine();
 
             // Фильтруем по пользователям и ОЗУ
             List<Computer> FilterbyUsersandRAM = computers
@@ -35,6 +35,7 @@
             Console.WriteLine($"Мои компьютеры с ОЗУ 16Гб:");
             foreach (var pc in FilterbyUsersandRAM)
                 Console.WriteLine($"  {pc.namePC}: {string.Join(",", pc.usersPC)} {pc.capacityRAM}Гб");
+            Console.WriteLine();
 
             // Сортируем по типу процессора
             List<Computer> sortCPU = computers
@@ -44,6 +45,7 @@
             Console.WriteLine($"Сортировка по типу ЦП");
             foreach (var pc in sortCPU)
                 Console.WriteLine($"  {pc.namePC}: {pc.typeCPU} {pc.manufacturerCPU}");
+            Console.WriteLine();
 
             // Сортируем по типу процессора и названию производителя
             List<Computer> sortbyCPUandManufacturer = computers
@@ -68,6 +70,7 @@
             Console.WriteLine($"ПК: Частота-ОЗУ: ПО");
             foreach (var pc in select)
                 Console.WriteLine($"  {pc.name}: {pc.ClockSpeed} МГц-{pc.RAM} Гб: {string.Join(",", pc.soft)}");
+            Console.WriteLine();
 
             // Заполняем List<Manufacturer>
 
@@ -117,7 +120,43 @@
                 return System.Text.RegularExpressions.Regex.Replace(str, @"[А-Яа-яЁё]", "");
             }
 
-            Console.WriteLine(RemoveRussianLetters("1C Предприятие"));
+            Console.WriteLine(RemoveRussianLetters("1C Предприятие\n"));
+            Console.ReadKey();
+
+            // ЛР 7
+            Console.WriteLine("ЛР 7");
+
+            // Создаем ПК
+            Computer PC = Computer.Generate();
+
+            // Подписываем его на события
+            PC.NewUserAdded += userName =>
+            { Console.WriteLine($"Добавлен {userName}"); };
+            PC.RAMChange += difference =>
+            {
+                if (difference >= 0)
+                    Console.WriteLine($"Объем ОЗУ увеличен на {difference} Гб");
+                else
+                    Console.WriteLine($"Объем ОЗУ уменьшен на {difference*-1} Гб");
+            };
+            PC.CPUChanged += (oldmanufacturerCPU, oldtypeCPU, manufacturercpu, typecpu) =>
+            { Console.WriteLine($"ЦП заменен. С {oldtypeCPU} {oldmanufacturerCPU} на {typecpu} {manufacturercpu}"); };
+            PC.SoftInstalled += softName =>
+            { Console.WriteLine($"ПО установлено - {softName}"); };
+
+            // Используем методы
+            PC.AddUser("Rendenok.AR");
+            PC.AddUser("Vavilin.OL");
+            PC.AddUser("Kushnareva.DA");
+
+            PC.ChangeRAM(32);
+            PC.ChangeRAM(4);
+            PC.ChangeRAM(8);
+
+            PC.ChangeCPU(TypeCPU.Настольный, ManufacturerCPU.Apple, 1700);
+
+            PC.InstallSoft("Р7-Офис");
+
             Console.ReadKey();
         }
     }
