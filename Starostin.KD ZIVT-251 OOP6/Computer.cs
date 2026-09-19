@@ -22,6 +22,7 @@ namespace Starostin.KD_ZIVT_251_OOP6
     {
         void OverclockTheComputer();
     }
+    // Объявление делегатов
     public delegate void UserAddedHandler(string userName);
     public delegate void CPUChangeHandler(ManufacturerCPU oldmanufacturerCPU, TypeCPU oldtypeCPU, ManufacturerCPU newmanufacturerCPU, TypeCPU newtypeCPU);
     public delegate void SoftwareInstallHandler(string softwareName);
@@ -51,11 +52,12 @@ namespace Starostin.KD_ZIVT_251_OOP6
         bool is_Overcloked = false;
         public string namePC;
 
-
+        // Приватные поля
         private UserAddedHandler newUserAdded;
         private CPUChangeHandler CPUchanged;
         private SoftwareInstallHandler SoftInstall;
         private RAMChangeHandler RAMChanged;
+
         // События
         public event UserAddedHandler NewUserAdded
         {
@@ -228,13 +230,14 @@ namespace Starostin.KD_ZIVT_251_OOP6
             return computers;
         }
 
-
+        // Метод добавления пользователя
         public void AddUser(string user)
         {
             usersPC.Add(user);
             newUserAdded?.Invoke(user);
         }
 
+        // Метод замены ЦП
         public void ChangeCPU(TypeCPU typecpu, ManufacturerCPU manufacturercpu, int clockspeedcpu)
         {
             TypeCPU oldtypeCPU = typeCPU;
@@ -245,12 +248,14 @@ namespace Starostin.KD_ZIVT_251_OOP6
             CPUchanged?.Invoke(oldmanufacturerCPU, oldtypeCPU, manufacturercpu, typecpu);
         }
 
+        // Метод установки ПО
         public void InstallSoft(string SoftName)
         {
             installedSoftware.Add(SoftName);
             SoftInstall?.Invoke(SoftName);
         }
 
+        // Метод замены ОЗУ
         public void ChangeRAM(int capacityram)
         {
             int difference = capacityram - capacityRAM;
